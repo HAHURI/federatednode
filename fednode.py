@@ -24,6 +24,8 @@ SCRIPTDIR = os.path.dirname(os.path.realpath(__file__))
 FEDNODE_CONFIG_FILE = ".fednode.config"
 FEDNODE_CONFIG_PATH = os.path.join(SCRIPTDIR, FEDNODE_CONFIG_FILE)
 
+REPO_BASE_HTTPS_HAHURI = "https://github.com/HAHURI/{}.git"
+REPO_BASE_SSH_HAHURI = "git@github.com:HAHURI/{}.git"
 REPO_BASE_HTTPS = "https://github.com/Monaparty/{}.git"
 REPO_BASE_SSH = "git@github.com:Monaparty/{}.git"
 REPOS_BASE = ['counterparty-lib', 'counterparty-cli']
@@ -239,7 +241,10 @@ def main():
         # check out the necessary source trees (don't use submodules due to detached HEAD and other problems)
         REPOS = REPOS_BASE if build_config == 'base' else (REPOS_COUNTERBLOCK if build_config == 'counterblock' else REPOS_FULL)
         for repo in REPOS:
-            repo_url = REPO_BASE_SSH.format(repo) if args.use_ssh_uris else REPO_BASE_HTTPS.format(repo)
+            if repo=="counterblock":
+                repo_url = REPO_BASE_SSH_HAHURI.format(repo) if args.use_ssh_uris else REPO_BASE_HTTPS_HAHURI.format(repo)
+            else:
+                repo_url = REPO_BASE_SSH.format(repo) if args.use_ssh_uris else REPO_BASE_HTTPS.format(repo)
             repo_dir = os.path.join(SCRIPTDIR, "src", repo)
             if not os.path.exists(repo_dir):
                 git_cmd = "git clone -b {} {} {}".format('monaparty' if repo_branch == 'master' else 'monaparty-develop', repo_url, repo_dir)
