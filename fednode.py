@@ -241,7 +241,7 @@ def main():
         # check out the necessary source trees (don't use submodules due to detached HEAD and other problems)
         REPOS = REPOS_BASE if build_config == 'base' else (REPOS_COUNTERBLOCK if build_config == 'counterblock' else REPOS_FULL)
         for repo in REPOS:
-            if repo=="counterblock":
+            if repo=="counterblock" or repo=="counterwallet":
                 repo_url = REPO_BASE_SSH_HAHURI.format(repo) if args.use_ssh_uris else REPO_BASE_HTTPS_HAHURI.format(repo)
             else:
                 repo_url = REPO_BASE_SSH.format(repo) if args.use_ssh_uris else REPO_BASE_HTTPS.format(repo)
